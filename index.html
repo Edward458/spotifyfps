@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            width: 1024px;
+            height: 900px;
+            border: solid #000000;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+   <canvas></canvas> 
+
+   <script>
+    const c = document.querySelector("canvas");
+    const ctx = c.getContext("2d");
+
+    var map = {
+    cols: 8,
+    rows: 8,
+    tsize: 16,
+    tiles: [
+        1, 1, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 2, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 0, 1, 1, 0, 0, 1,
+        1, 1, 1, 1, 1, 1, 1, 1
+    ],
+    getTile: function (col, row) {
+        return this.tiles[row * map.cols + col];
+    }
+};
+
+const load = function () {
+    return [
+        Loader.loadImage('tiles', '../assets/tiles.png')
+    ];
+};
+
+const init = function () {
+    this.tileAtlas = Loader.getImage('tiles');
+};
+
+const update = function (delta) {
+};
+
+const render = function () {
+    for (var c = 0; c < map.cols; c++) {
+        for (var r = 0; r < map.rows; r++) {
+            var tile = map.getTile(c, r);
+            if (tile == 0) { // 0 => empty tile
+                
+                ctx.fillStyle = "#cccccc";
+
+                ctx.fillRect(
+                    c * map.tsize,  // target x
+                    r * map.tsize, // target y
+                    map.tsize, // target width
+                    map.tsize // target height
+                );
+            }
+            else if(tile == 1)
+            {
+            
+            ctx.fillStyle = "#000000";
+
+
+                ctx.fillRect(
+                    c * map.tsize,  // target x
+                    r * map.tsize, // target y
+                    map.tsize, // target width
+                    map.tsize // target height
+                );
+            }
+            else if(tile == 2)
+            {
+
+            ctx.beginPath();
+            ctx.arc(c * map.tsize + map.tsize / 2, r * map.tsize + map.tsize / 2, map.tsize / 2, 0, 2 * Math.PI);
+            ctx.stroke();
+
+                
+            }
+        }
+    }
+};
+
+render();
+   </script>
+</body>
+</html>
